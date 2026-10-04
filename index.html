@@ -76,7 +76,6 @@
 
     <div class="result-box" id="resultBox">
         <h2>📊 تقريرك الصحي المخصص:</h2>
-        
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>السعرات المستهدفة يومياً</h3>
@@ -87,34 +86,34 @@
                 <p id="resProtein">0 جرام</p>
             </div>
         </div>
-
         <h3>💡 خطة الوجبات المقترحة بناءً على مدخلاتك:</h3>
         <div class="meal-plan" id="mealPlanText"></div>
     </div>
 </div>
 
 <script>
-// نظام الحماية بكلمة المرور للمشترين فقط
 const SECRET_PASSWORD = "VIP2026"; 
 
-window.onload = function() {
-    let accessGranted = false;
-    while (!accessGranted) {
-        let passwordInput = prompt("🔒 هذا المنتج رقمي محمّي للمشترين فقط.\nالرجاء إدخال رمز التفعيل الخاص بك لتشغيل الأداة:");
-        if (passwordInput === null) {
-            document.body.innerHTML = "<h2 style='text-align:center; margin-top:50px; color:#e74c3c;'>عذراً، لا يمكنك استخدام الأداة بدون رمز التفعيل.</h2>";
-            return;
+// تشغيل القفل بعد تحميل الصفحة بأمان لضمان ظهور الواجهة
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        let accessGranted = false;
+        while (!accessGranted) {
+            let passwordInput = prompt("🔒 هذا المنتج رقمي محمّي للمشترين فقط.\nالرجاء إدخال رمز التفعيل الخاص بك لتشغيل الأداة:");
+            if (passwordInput === null) {
+                document.body.innerHTML = "<h2 style='text-align:center; margin-top:50px; color:#e74c3c;'>عذراً، لا يمكنك استخدام الأداة بدون رمز التفعيل.</h2>";
+                return;
+            }
+            if (passwordInput === SECRET_PASSWORD) {
+                accessGranted = true;
+                alert("✅ تم التحقق بنجاح! أهلاً بك في مساعدك الصحي الذكي.");
+            } else {
+                alert("❌ رمز التفعيل غير صحيح! يرجى المحاولة مجدداً.");
+            }
         }
-        if (passwordInput === SECRET_PASSWORD) {
-            accessGranted = true;
-            alert("✅ تم التحقق بنجاح! أهلاً بك في مساعدك الصحي الذكي.");
-        } else {
-            alert("❌ رمز التفعيل غير صحيح! يرجى المحاولة مجدداً.");
-        }
-    }
-};
+    }, 500);
+});
 
-// محرك حساب السعرات وتخطيط الوجبات
 function generatePlan() {
     const goal = document.getElementById('goal').value;
     const weight = parseFloat(document.getElementById('weight').value);
@@ -130,7 +129,6 @@ function generatePlan() {
 
     let bmr = (10 * weight) + (6.25 * height) - (5 * age);
     bmr = (gender === 'male') ? bmr + 5 : bmr - 161;
-    
     let tdee = Math.round(bmr * 1.375);
     let targetCalories = tdee;
     let proteinPerKg = 1.6;
@@ -144,7 +142,6 @@ function generatePlan() {
     }
 
     const targetProtein = Math.round(weight * proteinPerKg);
-
     document.getElementById('resCalories').innerText = targetCalories + " كالوري";
     document.getElementById('resProtein').innerText = targetProtein + " جرام";
 
@@ -195,6 +192,5 @@ function generatePlan() {
     document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
 }
 </script>
-
 </body>
 </html>
